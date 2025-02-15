@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dim Sum and Rice Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            max-width: 500px;
+        }
+        label, input, button {
+            display: block;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dim Sum and Rice Calculator</h1>
+    <label for="men">Number of Men:</label>
+    <input type="number" id="men" placeholder="Enter number of men" min="0">
+
+    <label for="women">Number of Women:</label>
+    <input type="number" id="women" placeholder="Enter number of women" min="0">
+
+    <button onclick="calculateOrder()">Calculate Order</button>
+
+    <h2>Results:</h2>
+    <p id="output"></p>
+
+    <script>
+        function calculateOrder() {
+            const manCount = parseInt(document.getElementById("men").value) || 0;
+            const womanCount = parseInt(document.getElementById("women").value) || 0;
+
+            // Check if both inputs are integers
+            if (!Number.isInteger(manCount) || !Number.isInteger(womanCount)) {
+                alert("Please enter valid integer values for men and women.");
+                return;
+            }
+
+            const foodPerMan = 2.5; // Each man can eat 2.5 units of food
+            const foodPerWoman = 2;  // Each woman can eat 2 units of food
+
+            // Calculate total food consumed
+            const totalFood = (manCount * foodPerMan) + (womanCount * foodPerWoman);
+
+            // Calculate number of Dim Sum and Fried Rice combinations
+            const totalDimSum = Math.floor(totalFood); // Each Dim Sum = 1 unit
+            const combinations = [];
+
+            for (let dimSum = 0; dimSum <= totalDimSum; dimSum++) {
+                const friedRice = (totalFood - dimSum) / 1.5;
+                if (friedRice >= 0 && Number.isInteger(friedRice) && friedRice <= dimSum) {
+                    combinations.push(`Dim Sum: ${dimSum}, Fried Rice: ${friedRice}`);
+                }
+            }
+
+            document.getElementById("output").innerText = 
+                `Total food they can eat: ${totalFood.toFixed(2)} units.\n` +
+                `Possible combinations:\n` + (combinations.length > 0 ? combinations.join('\n') : 'No valid combinations available.');
+        }
+    </script>
+</body>
+</html>
